@@ -1,0 +1,12 @@
+package com.zyvo.universalprint.ui.theme
+
+import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.lightColorScheme
+import androidx.compose.runtime.Composable
+
+private val LightColors = lightColorScheme()
+
+@Composable
+fun UniversalPrintTheme(content: @Composable () -> Unit) {
+    MaterialTheme(colorScheme = LightColors, content = content)
+}

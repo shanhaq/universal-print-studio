@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <!-- USB printer device filter: matches common printer class devices -->
+    <usb-device class="7" subclass="1" protocol="2" />
+    <usb-device vendor-id="0x04B8" /> <!-- Epson -->
+    <usb-device vendor-id="0x03F0" /> <!-- HP -->
+    <usb-device vendor-id="0x04F9" /> <!-- Brother -->
+    <usb-device vendor-id="0x0A5F" /> <!-- Zebra -->
+</resources>
