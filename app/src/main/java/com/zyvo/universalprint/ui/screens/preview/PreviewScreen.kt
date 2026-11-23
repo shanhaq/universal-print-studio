@@ -2,9 +2,8 @@ package com.zyvo.universalprint.ui.screens.preview
 
 import android.graphics.Bitmap
 import androidx.compose.foundation.Image
+import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
-import androidx.compose.foundation.layout.Column
-import androidx.compose.ui.Alignment
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
@@ -17,16 +16,14 @@ import androidx.compose.material3.IconButton
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
-import androidx.compose.material3.Button
 import androidx.compose.material3.TopAppBar
 import androidx.compose.runtime.Composable
-import androidx.compose.ui.platform.LocalContext
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.asImageBitmap
-import androidx.compose.ui.unit.dp
+import androidx.compose.ui.layout.ContentScale
 import androidx.hilt.navigation.compose.hiltViewModel
 
 @OptIn(ExperimentalMaterial3Api::class)
@@ -44,16 +41,16 @@ fun PreviewScreen(documentId: String, onBack: () -> Unit) {
         }
     ) { pad ->
         Box(modifier = Modifier.fillMaxSize().padding(pad), contentAlignment = Alignment.Center) {
+            val bmp = state.bitmap
             when {
                 state.isLoading -> CircularProgressIndicator()
-                state.error != null -> Text(state.error ?: "Error")
-                state.bitmap != null -> Column(horizontalAlignment = Alignment.CenterHorizontally) {
-                    Image(bitmap = state.bitmap!!.asImageBitmap(), contentDescription = "Preview")
-                    Button(onClick = {
-                        val ctx = LocalContext.current
-                        com.zyvo.universalprint.util.PrintHelperUtil.printBitmap(ctx, "UniversalPrint", state.bitmap!!)
-                    }) { Text("Print (System)") }
-                }
+                bmp != null -> Image(
+                    bitmap = bmp.asImageBitmap(),
+                    contentDescription = "Preview",
+                    contentScale = ContentScale.Fit,
+                    modifier = Modifier.fillMaxSize()
+                )
+                else -> Text(state.error ?: "No preview", style = MaterialTheme.typography.bodyLarge)
             }
         }
     }

@@ -55,7 +55,7 @@ class BluetoothPrinterConnector @Inject constructor(
 
     override suspend fun send(job: PrintJob, payload: ByteArray): Result<Unit> {
         val bt = adapter ?: return Result.failure(IllegalStateException("Bluetooth unavailable"))
-        val address = job.printerId.removePrefix("bt_")
+        val address = job.printerId?.removePrefix("bt_") ?: ""
         val device: BluetoothDevice = try {
             bt.getRemoteDevice(address)
         } catch (e: IllegalArgumentException) {
