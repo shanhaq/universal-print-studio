@@ -26,7 +26,7 @@ class EscPosBuilder {
         buf.write(byteArrayOf(0x1D, 0x56, if (partial) 0x01 else 0x00)); return this
     }
     fun openDrawer(pin: Int = 0): EscPosBuilder {
-        buf.write(byteArrayOf(0x1B, 0x70, pin.toByte(), 0x19, 0xFA)); return this
+        buf.write(byteArrayOf(0x1B, 0x70, pin.toByte(), 0x19.toByte(), 0xFA.toByte())); return this
     }
     fun qr(data: String, size: Int = 6): EscPosBuilder {
         val bytes = data.toByteArray(Charsets.UTF_8)
