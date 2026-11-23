@@ -17,9 +17,6 @@ interface PaperSizeDao {
     @Query("SELECT * FROM paper_sizes WHERE isCustom = 1")
     fun getCustom(): Flow<List<PaperSizeEntity>>
 
-    @Query("SELECT * FROM paper_sizes")
-    fun getAll(): Flow<List<PaperSizeEntity>>
-
     @Query("SELECT * FROM paper_sizes WHERE id = :id")
     suspend fun getById(id: String): PaperSizeEntity?
 
