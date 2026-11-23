@@ -60,10 +60,7 @@ fun HomeScreen(
         },
         floatingActionButton = {
             FloatingActionButton(onClick = {
-                // Create a new document with default A4 paper
-                // Delegated to repository via a quick coroutine is not possible here;
-                // instead navigate to papers to pick size first.
-                onOpenPapers()
+                vm.createDocument("iso-a4") { id -> onOpenCanvas(id) }
             }) { Icon(Icons.Default.Add, "New") }
         }
     ) { pad ->

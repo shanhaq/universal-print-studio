@@ -31,4 +31,17 @@ class HomeViewModel @Inject constructor(
             try { repo.delete(id) } catch (e: Exception) { /* surface via state in real impl */ }
         }
     }
+
+    fun createDocument(paperId: String, onCreated: (String) -> Unit) {
+        viewModelScope.launch {
+            val paper = com.zyvo.universalprint.domain.model.PaperCatalog.byId(paperId)
+                ?: com.zyvo.universalprint.domain.model.PaperCatalog.all.first()
+            val doc = com.zyvo.universalprint.domain.model.Document(
+                name = "Untitled",
+                paperSize = paper
+            )
+            repo.save(doc)
+            onCreated(doc.id)
+        }
+    }
 }
