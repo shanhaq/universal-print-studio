@@ -15,7 +15,9 @@ class EscPosBuilderTest {
     @Test
     fun bold_toggle() {
         val b = EscPosBuilder().bold(true).build()
-        assertThat(b.toList()).containsAllOf(0x1B.toByte(), 0x45.toByte(), 0x01.toByte())
+        assertThat(b.toList()).contains(0x1B.toByte())
+        assertThat(b.toList()).contains(0x45.toByte())
+        assertThat(b.toList()).contains(0x01.toByte())
     }
 
     @Test
