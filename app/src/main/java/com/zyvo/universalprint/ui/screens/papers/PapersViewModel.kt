@@ -63,6 +63,8 @@ class PapersViewModel @Inject constructor(
     fun createCustomPaper(name: String, widthMm: Double, heightMm: Double) {
         viewModelScope.launch {
             try {
+                require(widthMm > 0 && heightMm > 0) { "Dimensions must be greater than 0" }
+                require(widthMm <= 10000 && heightMm <= 10000) { "Dimensions exceed supported maximum (10000 mm)" }
                 val paper = PaperSize(
                     id = "custom_${System.currentTimeMillis()}",
                     name = name.ifBlank { "Custom" },
@@ -71,7 +73,7 @@ class PapersViewModel @Inject constructor(
                     isCustom = true
                 )
                 paperRepo.saveCustom(paper)
-                _state.update { it.copy(showCustomDialog = false) }
+                _state.update { it.copy(showCustomDialog = false, error = null) }
             } catch (e: Exception) {
                 _state.update { it.copy(error = e.message) }
             }
