@@ -47,8 +47,13 @@ class PapersViewModel @Inject constructor(
             val base = if (s.selectedCategory == null) PaperCatalog.all else PaperCatalog.byCategory(s.selectedCategory)
             val custom = s.customPapers
             val combined = base + custom
-            return if (s.searchQuery.isBlank()) combined
-            else combined.filter { it.name.contains(s.searchQuery, ignoreCase = true) }
+            val q = s.searchQuery.trim()
+            return if (q.isBlank()) combined
+            else combined.filter {
+                it.name.contains(q, ignoreCase = true) ||
+                    (it.standardCode?.contains(q, ignoreCase = true) == true) ||
+                    (it.region?.contains(q, ignoreCase = true) == true)
+            }
         }
 
     fun setCategory(cat: PaperCategory?) = _state.update { it.copy(selectedCategory = cat) }
@@ -75,6 +80,14 @@ class PapersViewModel @Inject constructor(
 
     fun deleteCustom(id: String) {
         viewModelScope.launch { paperRepo.deleteCustom(id) }
+    }
+
+    fun toggleFavorite(paper: PaperSize) {
+        viewModelScope.launch {
+            if (paper.isCustom) {
+                paperRepo.setFavorite(paper.id, !paper.isFavorite)
+            }
+        }
     }
 
     fun createDocument(paper: PaperSize, onCreated: (String) -> Unit) {

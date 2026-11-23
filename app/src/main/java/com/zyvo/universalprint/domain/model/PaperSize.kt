@@ -33,20 +33,35 @@ data class PaperDimensions(
 }
 
 enum class PaperCategory {
-    ISO, NORTH_AMERICAN, PHOTO, LABEL, RECEIPT, CUSTOM
+    ISO, JIS, ANSI, ARCH, NORTH_AMERICAN, REGIONAL, PHOTO, ENVELOPE, LABEL, CARD, RECEIPT, THERMAL, MANUFACTURER, CUSTOM
 }
 
 /**
  * A named paper size definition. Immutable catalog entry.
  * version field allows future migration of definitions.
  */
+enum class PaperOrientation { PORTRAIT, LANDSCAPE, EITHER }
+
 data class PaperSize(
     val id: String,
     val name: String,
     val dimensions: PaperDimensions,
     val category: PaperCategory,
+    // Provenance / standards metadata (Phase 02)
+    val standardCode: String? = null,        // e.g. "ISO 216", "ANSI/ASME Y14.1"
+    val region: String? = null,              // e.g. "Global", "US", "Japan"
+    val sourceName: String? = null,          // standards body / dataset name
+    val sourceUrl: String? = null,           // reference URL
+    val revision: String? = null,            // standard revision/version
+    val isStandard: Boolean = false,        // verified standard entry
+    val isCustom: Boolean = false,
+    val isFavorite: Boolean = false,
+    val isRollMedia: Boolean = false,        // thermal/continuous roll
+    val defaultOrientation: PaperOrientation = PaperOrientation.EITHER,
     val version: Int = 1,
-    val isCustom: Boolean = false
+    val metadata: Map<String, String> = emptyMap()
 ) {
     val displayName: String get() = if (isCustom) "$name (custom)" else name
+    val widthMm: Double get() = dimensions.widthMm
+    val heightMm: Double get() = dimensions.heightMm
 }

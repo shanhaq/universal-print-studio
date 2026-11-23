@@ -18,7 +18,7 @@ import com.zyvo.universalprint.data.db.entity.PrinterEntity
         LayerEntity::class,
         PrinterEntity::class
     ],
-    version = 1,
+    version = 2,
     exportSchema = false
 )
 abstract class UniversalPrintDatabase : RoomDatabase() {

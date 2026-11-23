@@ -15,6 +15,9 @@ class PaperRepositoryImpl @Inject constructor(
     override fun observeCustom(): Flow<List<PaperSize>> =
         dao.getCustom().map { list -> list.map { it.toDomain() } }
 
+    override fun observeAll(): Flow<List<PaperSize>> =
+        dao.getAll().map { list -> list.map { it.toDomain() } }
+
     override suspend fun saveCustom(paper: PaperSize) {
         dao.insert(paper.toEntity())
     }
@@ -22,4 +25,11 @@ class PaperRepositoryImpl @Inject constructor(
     override suspend fun deleteCustom(id: String) {
         dao.deleteById(id)
     }
+
+    override suspend fun setFavorite(id: String, favorite: Boolean) {
+        dao.setFavorite(id, favorite)
+    }
+
+    override suspend fun getById(id: String): PaperSize? =
+        dao.getById(id)?.toDomain()
 }
